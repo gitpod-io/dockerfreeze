@@ -1,6 +1,6 @@
 tasks:
   - init: cargo build && cargo install --path . --force
-    command: dockerfreeze
+    command: dockerfreeze --help
 vscode:
   extensions:
     - hbenl.vscode-test-explorer@2.15.0:koqDUMWDPJzELp/hdS/lWw==

@@ -1,13 +1,43 @@
-use std::path::PathBuf;
+use std::fs::OpenOptions;
+use std::io::Write;
+use std::process::exit;
 use structopt::StructOpt;
 
 #[derive(StructOpt)]
 struct Cli {
     /// Output file for Dockerfile
-    #[structopt(short = "o", long = "output", parse(from_os_str))]
-    file: Option<PathBuf>,
+    #[structopt(short = "o", long = "output")]
+    file: Option<String>,
 }
 
 fn main() {
     let args = Cli::from_args();
+    let _file = match args.file {
+        Some(n) => match OpenOptions::new().write(true).create_new(true).open(n) {
+            Ok(n) => {
+                println!("\x1b[1;32mFile Created!\x1b[m");
+                n
+            }
+            Err(_) => {
+                println!("\x1b[1;31mError: File Already Exists!\x1b[m");
+                exit(1);
+            }
+        },
+        None => {
+            match OpenOptions::new()
+                .write(true)
+                .create_new(true)
+                .open("Dockerfile")
+            {
+                Ok(n) => {
+                    println!("\x1b[1;32mFile Created!\x1b[m");
+                    n
+                }
+                Err(_) => {
+                    println!("\x1b[1;31mError: File Already Exists!\x1b[m");
+                    exit(1);
+                }
+            }
+        }
+    };
 }

@@ -1,7 +1,7 @@
 use std::fs::OpenOptions;
-use structopt::StructOpt;
-use std::process::exit;
 use std::io::Write;
+use std::process::exit;
+use structopt::StructOpt;
 
 #[derive(StructOpt)]
 struct Cli {
@@ -21,7 +21,7 @@ fn main() {
             Err(_) => {
                 println!("\x1b[1;31mError: File Already Exists!\x1b[m");
                 exit(1);
-            },
+            }
         },
         None => {
             match OpenOptions::new()

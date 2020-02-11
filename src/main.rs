@@ -1,9 +1,9 @@
+use std::env::vars;
+use std::fs::File;
 use std::fs::OpenOptions;
 use std::io::Write;
 use std::process::exit;
 use structopt::StructOpt;
-use std::fs::File;
-use std::env::vars;
 
 #[derive(StructOpt)]
 struct Cli {
@@ -15,9 +15,13 @@ struct Cli {
 fn write_env_vars(file: &mut File) {
     for (key, value) in vars() {
         if value.contains(" ") {
-            &file.write(format!("ENV {}=\"{}\"\n", key, value).as_bytes()).unwrap();
+            &file
+                .write(format!("ENV {}=\"{}\"\n", key, value).as_bytes())
+                .unwrap();
         } else {
-            &file.write(format!("ENV {}={}\n", key, value).as_bytes()).unwrap();
+            &file
+                .write(format!("ENV {}={}\n", key, value).as_bytes())
+                .unwrap();
         }
     }
 }

@@ -37,7 +37,7 @@ fn write_env_vars(file: &mut File) {
                     .unwrap();
             }
         }
-        count+=1;
+        count += 1;
     }
 }
 

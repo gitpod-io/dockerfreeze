@@ -1,3 +1,5 @@
+use std::env::vars;
+use std::fs::File;
 use std::fs::OpenOptions;
 use std::io::Write;
 use std::process::exit;
@@ -10,9 +12,38 @@ struct Cli {
     file: Option<String>,
 }
 
+fn write_env_vars(file: &mut File) {
+    let mut count = 0;
+    for (key, value) in vars() {
+        let value = value.replace("\"", "\\\"");
+        if value.contains(" ") || value.contains("{") || value.contains("}") {
+            if count == 0 {
+                &file
+                    .write(format!("ENV {}=\"{}\" ", key, value).as_bytes())
+                    .unwrap();
+            } else {
+                &file
+                    .write(format!("{}=\"{}\" ", key, value).as_bytes())
+                    .unwrap();
+            }
+        } else {
+            if count == 0 {
+                &file
+                    .write(format!("ENV {}={} ", key, value).as_bytes())
+                    .unwrap();
+            } else {
+                &file
+                    .write(format!("{}={} ", key, value).as_bytes())
+                    .unwrap();
+            }
+        }
+        count+=1;
+    }
+}
+
 fn main() {
     let args = Cli::from_args();
-    let _file = match args.file {
+    let mut file = match args.file {
         Some(n) => match OpenOptions::new().write(true).create_new(true).open(n) {
             Ok(n) => {
                 println!("\x1b[1;32mFile Created!\x1b[m");
@@ -40,4 +71,5 @@ fn main() {
             }
         }
     };
+    write_env_vars(&mut file);
 }

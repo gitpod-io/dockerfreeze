@@ -13,14 +13,23 @@ struct Cli {
     file: Option<String>,
 }
 
-fn write_linux_distro(file: &mut File) {
-    // Read /etc/os-release
+fn get_distro() -> String {
     let mut content = String::new();
     let mut os_release = File::open("/etc/os-release").unwrap();
     let regex = regex::Regex::new(".*\nID=(.*)\n").unwrap();
     os_release.read_to_string(&mut content).unwrap();
-    let distro = regex.captures(&content).unwrap().get(1).unwrap().as_str();
-    match distro {
+    return regex
+        .captures(&content)
+        .unwrap()
+        .get(1)
+        .unwrap()
+        .as_str()
+        .to_owned();
+}
+
+fn write_linux_distro(file: &mut File) {
+    let distro = get_distro();
+    match distro.as_str() {
         "ubuntu" => {
             file.write(b"FROM ubuntu:latest\n").unwrap();
         }
@@ -31,7 +40,10 @@ fn write_linux_distro(file: &mut File) {
             file.write(b"FROM debian:latest\n").unwrap();
         }
         _ => {
-            println!("\x1b[33mUnknown Distro \"{}\" Re-routing to Ubuntu\x1b[0m", distro);
+            println!(
+                "\x1b[33mUnknown Distro \"{}\" Re-routing to Ubuntu\x1b[0m",
+                distro
+            );
             file.write("FROM ubuntu:latest\n".as_bytes()).unwrap();
         }
     }

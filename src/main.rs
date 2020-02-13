@@ -17,7 +17,7 @@ fn write_linux_distro(file: &mut File) {
     // Read /etc/os-release
     let mut content = String::new();
     let mut os_release = File::open("/etc/os-release").unwrap();
-    let regex = regex::Regex::new(".*ID=(.*)\n").unwrap();
+    let regex = regex::Regex::new(".*\nID=(.*)\n").unwrap();
     os_release.read_to_string(&mut content).unwrap();
     let distro = regex.captures(&content).unwrap().get(1).unwrap().as_str();
     match distro {

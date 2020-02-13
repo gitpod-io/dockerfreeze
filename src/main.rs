@@ -31,7 +31,7 @@ fn write_linux_distro(file: &mut File) {
             file.write(b"FROM debian:latest\n").unwrap();
         }
         _ => {
-            println!("\x1b[33mUnknown Distro \"{}\"Re-routing to Ubuntu\x1b[0m", distro);
+            println!("\x1b[33mUnknown Distro \"{}\" Re-routing to Ubuntu\x1b[0m", distro);
             file.write("FROM ubuntu:latest\n".as_bytes()).unwrap();
         }
     }

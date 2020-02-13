@@ -1,4 +1,4 @@
-# Docker-Freeze
+# dockerfreeze
 Freeze your development environment as a Dockerfile
 
 

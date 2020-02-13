@@ -23,13 +23,13 @@ fn write_linux_distro(file: &mut File) {
     match distro {
         "ubuntu" => {
             file.write(b"FROM ubuntu:latest\n").unwrap();
-        },
+        }
         "alpine" => {
             file.write(b"FROM alpine:latest\n").unwrap();
-        },
+        }
         "debian" => {
             file.write(b"FROM debian:latest\n").unwrap();
-        },
+        }
         _ => {
             println!("\x1b[33mUnknown Distro Re-routing to Ubuntu\x1b[0m");
             file.write("FROM ubuntu\n".as_bytes()).unwrap();

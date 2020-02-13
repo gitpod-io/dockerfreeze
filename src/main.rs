@@ -1,6 +1,7 @@
 use std::env::vars;
 use std::fs::File;
 use std::fs::OpenOptions;
+use std::io::Read;
 use std::io::Write;
 use std::process::exit;
 use structopt::StructOpt;
@@ -10,6 +11,30 @@ struct Cli {
     /// Output file for Dockerfile
     #[structopt(short = "o", long = "output")]
     file: Option<String>,
+}
+
+fn write_linux_distro(file: &mut File) {
+    // Read /etc/os-release
+    let mut content = String::new();
+    let mut os_release = File::open("/etc/os-release").unwrap();
+    let regex = regex::Regex::new(".*ID=(.*)\n").unwrap();
+    os_release.read_to_string(&mut content).unwrap();
+    let distro = regex.captures(&content).unwrap().get(1).unwrap().as_str();
+    match distro {
+        "ubuntu" => {
+            file.write(b"FROM ubuntu:latest\n").unwrap();
+        }
+        "alpine" => {
+            file.write(b"FROM alpine:latest\n").unwrap();
+        }
+        "debian" => {
+            file.write(b"FROM debian:latest\n").unwrap();
+        }
+        _ => {
+            println!("\x1b[33mUnknown Distro Re-routing to Ubuntu\x1b[0m");
+            file.write("FROM ubuntu\n".as_bytes()).unwrap();
+        }
+    }
 }
 
 fn write_env_vars(file: &mut File) {
@@ -71,5 +96,6 @@ fn main() {
             }
         }
     };
+    write_linux_distro(&mut file);
     write_env_vars(&mut file);
 }

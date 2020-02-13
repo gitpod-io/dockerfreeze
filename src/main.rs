@@ -32,7 +32,7 @@ fn write_linux_distro(file: &mut File) {
         }
         _ => {
             println!("\x1b[33mUnknown Distro Re-routing to Ubuntu\x1b[0m");
-            file.write("FROM ubuntu\n".as_bytes()).unwrap();
+            file.write("FROM ubuntu:latest\n".as_bytes()).unwrap();
         }
     }
 }

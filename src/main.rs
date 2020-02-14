@@ -11,6 +11,9 @@ struct Cli {
     /// Output file for Dockerfile
     #[structopt(short = "o", long = "output")]
     file: Option<String>,
+    /// Optimize Dockerfile for Gitpod
+    #[structopt(short, long, parse(from_flag))]
+    gitpod: bool,
 }
 
 fn get_distro() -> String {
@@ -29,23 +32,29 @@ fn get_distro() -> String {
 
 fn write_linux_distro(file: &mut File) {
     let distro = get_distro();
-    match distro.as_str() {
-        "ubuntu" => {
-            file.write(b"FROM ubuntu:latest\n").unwrap();
+    let args = Cli::from_args();
+    match args.gitpod {
+        true => {
+            file.write(b"FROM gitpod/workspace-full:latest\n").unwrap();
         }
-        "alpine" => {
-            file.write(b"FROM alpine:latest\n").unwrap();
-        }
-        "debian" => {
-            file.write(b"FROM debian:latest\n").unwrap();
-        }
-        _ => {
-            println!(
-                "\x1b[33mUnknown Distro \"{}\" Re-routing to Ubuntu\x1b[0m",
-                distro
-            );
-            file.write("FROM ubuntu:latest\n".as_bytes()).unwrap();
-        }
+        false => match distro.as_str() {
+            "ubuntu" => {
+                file.write(b"FROM ubuntu:latest\n").unwrap();
+            }
+            "alpine" => {
+                file.write(b"FROM alpine:latest\n").unwrap();
+            }
+            "debian" => {
+                file.write(b"FROM debian:latest\n").unwrap();
+            }
+            _ => {
+                println!(
+                    "\x1b[33mUnknown Distro \"{}\" Re-routing to Ubuntu\x1b[0m",
+                    distro
+                );
+                file.write("FROM ubuntu:latest\n".as_bytes()).unwrap();
+            }
+        },
     }
 }
 

@@ -1,91 +1,13 @@
-use std::env::vars;
-use std::fs::File;
+mod detection;
+mod lib;
+mod write;
+
+use crate::lib::Cli;
+use crate::write::write_env_vars;
+use crate::write::write_linux_distro;
 use std::fs::OpenOptions;
-use std::io::Read;
-use std::io::Write;
 use std::process::exit;
 use structopt::StructOpt;
-
-#[derive(StructOpt)]
-struct Cli {
-    /// Output file for Dockerfile
-    #[structopt(short = "o", long = "output")]
-    file: Option<String>,
-    /// Optimize Dockerfile for Gitpod
-    #[structopt(short, long, parse(from_flag))]
-    gitpod: bool,
-}
-
-fn get_distro() -> String {
-    let mut content = String::new();
-    let mut os_release = File::open("/etc/os-release").unwrap();
-    let regex = regex::Regex::new(".*\nID=(.*)\n").unwrap();
-    os_release.read_to_string(&mut content).unwrap();
-    return regex
-        .captures(&content)
-        .unwrap()
-        .get(1)
-        .unwrap()
-        .as_str()
-        .to_owned();
-}
-
-fn write_linux_distro(file: &mut File) {
-    let distro = get_distro();
-    let args = Cli::from_args();
-    match args.gitpod {
-        true => {
-            file.write(b"FROM gitpod/workspace-full:latest\n").unwrap();
-        }
-        false => match distro.as_str() {
-            "ubuntu" => {
-                file.write(b"FROM ubuntu:latest\n").unwrap();
-            }
-            "alpine" => {
-                file.write(b"FROM alpine:latest\n").unwrap();
-            }
-            "debian" => {
-                file.write(b"FROM debian:latest\n").unwrap();
-            }
-            _ => {
-                println!(
-                    "\x1b[33mUnknown Distro \"{}\" Re-routing to Ubuntu\x1b[0m",
-                    distro
-                );
-                file.write("FROM ubuntu:latest\n".as_bytes()).unwrap();
-            }
-        },
-    }
-}
-
-fn write_env_vars(file: &mut File) {
-    let mut count = 0;
-    for (key, value) in vars() {
-        let value = value.replace("\"", "\\\"");
-        if value.contains(" ") || value.contains("{") || value.contains("}") {
-            if count == 0 {
-                &file
-                    .write(format!("ENV {}=\"{}\" ", key, value).as_bytes())
-                    .unwrap();
-            } else {
-                &file
-                    .write(format!("{}=\"{}\" ", key, value).as_bytes())
-                    .unwrap();
-            }
-        } else {
-            if count == 0 {
-                &file
-                    .write(format!("ENV {}={} ", key, value).as_bytes())
-                    .unwrap();
-            } else {
-                &file
-                    .write(format!("{}={} ", key, value).as_bytes())
-                    .unwrap();
-            }
-        }
-        count += 1;
-    }
-}
 
 fn main() {
     let args = Cli::from_args();

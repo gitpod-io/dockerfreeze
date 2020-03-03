@@ -15,7 +15,7 @@ use std::process::exit;
 use structopt::StructOpt;
 
 use os_detect::detect_os_from_path;
-use os_detect::detect_windows;
+//use os_detect::detect_windows;
 use std::path::Path;
 
 fn main() {
@@ -25,7 +25,9 @@ fn main() {
     if cfg!(target_os = "linux") || cfg!(target_os = "macos") {
         detect_os_from_path(Path::new("/"));
     } else if cfg!(target_os = "windows") {
-        detect_windows(Path::new("c:/"));
+        println!("Windows is currently not supported, fixme?");
+        exit(1);
+        //detect_windows(Path::new("c:/"));
     } else {
       // FIXME: Output the kernel
       println!("This {} kernel is not supported\n", "FIXME_KERNEL");

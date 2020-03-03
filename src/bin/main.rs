@@ -14,7 +14,24 @@ use std::fs::OpenOptions;
 use std::process::exit;
 use structopt::StructOpt;
 
+use os_detect::detect_os_from_path;
+use os_detect::detect_windows;
+use std::path::Path;
+
 fn main() {
+    // Kernel detection
+    // FIXME: export in lib.rs?
+    // FIXME-QA: Add test/bench?
+    if cfg!(target_os = "linux") || cfg!(target_os = "macos") {
+        detect_os_from_path(Path::new("/"));
+    } else if cfg!(target_os = "windows") {
+        detect_windows(Path::new("c:/"));
+    } else {
+      // FIXME: Output the kernel
+      println!("This {} kernel is not supported\n", "FIXME_KERNEL");
+      exit(255);
+    }
+
     let args = Cli::from_args();
     let mut file = match args.file {
         Some(n) => match OpenOptions::new().write(true).create_new(true).open(n) {

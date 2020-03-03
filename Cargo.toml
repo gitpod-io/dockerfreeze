@@ -7,5 +7,17 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# Used to detect running kernel
+os-detect = "0.2.2"
+# For argument resolution
 structopt = "0.3.9"
+# RegEx
 regex = "1"
+
+# Custom crates prepared for export
+dockerfreeze_detect_fsh = { path = "src/crates/dockerfreeze_detect_fsh" }
+dockerfreeze_capture_executables = { path = "src/crates/dockerfreeze_capture_executables" }
+
+[dev-dependencies]
+# Used for benchmarking
+criterion = "0.3.1"

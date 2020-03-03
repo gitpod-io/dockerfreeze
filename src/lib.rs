@@ -2,6 +2,15 @@ use std::fs::File;
 use std::io::Write;
 use structopt::StructOpt;
 
+/*
+  This file is expected to provide backend for software to use required crates for it's runtime in main.rs while allowing for crate usage
+*/
+
+pub mod modules {
+  pub mod detection;
+  pub mod write;
+}
+
 #[derive(StructOpt)]
 pub struct Cli {
     /// Output file for Dockerfile

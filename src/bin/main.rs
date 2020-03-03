@@ -1,10 +1,15 @@
-mod detection;
-mod lib;
-mod write;
+// Created by Sean Hellum <seanhellum45@gmail.com> under MIT license (https://opensource.org/licenses/MIT) in 2020
+// Refactored by Jacob Hrbek <kreyren@rixotstudio.cz> under MIT license (https://opensource.org/licenses/MIT) in 2020
 
-use crate::lib::Cli;
-use crate::write::write_env_vars;
-use crate::write::write_linux_distro;
+/*
+  Capture your local development environment into a dockerfile
+
+  We are expecting the end-user to run this on their local system for us to generate a dockerfile
+*/
+
+use dockerfreeze::modules::write::write_env_vars;
+use dockerfreeze::modules::write::write_linux_distro;
+use dockerfreeze::Cli;
 use std::fs::OpenOptions;
 use std::process::exit;
 use structopt::StructOpt;

@@ -1,0 +1,30 @@
+name: Dockerfile
+
+# Relevant to events - https://help.github.com/en/actions/automating-your-workflow-with-github-actions/events-that-trigger-workflows
+on: 
+  pull_request:
+    types: [synchronize, opened, reopened, ready_for_review]
+    paths:
+    - '**.Dockerfile'
+
+jobs:
+  # Linting
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Installing dependencies..
+        run: |
+          # Fix untill hadolint it available by downstream
+          if ! apt-cache search hadolint | grep -qP "^hadolint -"; then
+            # Install hadolint if not already installed through apt
+            if ! apt list --installed | grep -qP "^hadolint -"; then
+              if ! apt-cache search hadolint | grep -qP "^hadolint -.*"; then { if command -v wget >/dev/null; then apt install -y wget; fi ;} && wget https://github.com/hadolint/hadolint/releases/download/v1.17.5/hadolint-Linux-x86_64 -O /usr/bin/hadolint && { [ ! -x hadolint ] && chmod +x /usr/bin/hadolint ;}; elif apt-cache search hadolint | grep -qP "^hadolint -.*"; then apt install -y hadolint; fi
+            fi
+          fi
+      - name: Linting..
+        run: |
+          cd "$GITHUB_WORKSPACE" && for file in $(git ls-tree --name-only -r ${{ github.sha }} | grep '\.Dockerfile$'); do
+            printf 'checking dockerfile %s using hadolint\n' "$file"
+            hadolint "$file"
+          done

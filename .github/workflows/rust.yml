@@ -1,15 +1,84 @@
-name: Rust
+# Workflow for Rustlang
+name: Rustlang
 
-on: [push]
+# Relevant to events - https://help.github.com/en/actions/automating-your-workflow-with-github-actions/events-that-trigger-workflows
+on: 
+  pull_request:
+    types: [synchronize, opened, reopened, ready_for_review]
+    paths:
+    - '**.rs'
+    - Cargo.toml
 
 jobs:
-  build:
-
+  # Kernel specific builds
+  ubuntu-build:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+      - uses: actions/checkout@v2
+      - name: Building..
+        run: cargo build
+  macos-build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Building..
+        run: cargo build
+  windows-build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Building..
+        run: cargo build
+
+  # Docker builds
+  debian-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker://debian:testing
+      - name: Building..
+        run: cargo build
+  fedora-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker://fedora:latest
+      - name: Building..
+        run: cargo build
+  fedora-next-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker://fedora:rawhide
+      - name: Building..
+        run: cargo build
+  archlinux-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker://archlinux:latest
+      - name: Building..
+        run: cargo build
+  gentoo-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker://gentoo/stage3-amd64:latest
+      - name: Building..
+        run: cargo build
+
+  # Run tests
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Testing..
+        run: cargo test
+
+  # Benchmarks
+  bench:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Benchmarking..
+        run: cargo bench

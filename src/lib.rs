@@ -2,6 +2,11 @@ use std::fs::File;
 use std::io::Write;
 use structopt::StructOpt;
 
+pub mod modules {
+  pub mod detection;
+  pub mod write;
+}
+
 #[derive(StructOpt)]
 pub struct Cli {
     /// Output file for Dockerfile

@@ -2,9 +2,9 @@
 // Refactored by Jacob Hrbek <kreyren@rixotstudio.cz> under MIT license (https://opensource.org/licenses/MIT) in 2020
 
 /*
-  Freeze your development environment as a Dockerfile
+  Capture your local development environment into a dockerfile
 
-  FIXME: Abstract
+  We are expecting the end-user to run this on their local system for us to generate a dockerfile
 */
 
 use dockerfreeze::modules::write::write_env_vars;

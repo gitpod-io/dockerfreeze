@@ -9,8 +9,12 @@ edition = "2018"
 [dependencies]
 # Used to detect running kernel
 os-detect = "0.2.2"
+# To output unsupported kernel
+uname = "0.1.1"
 # For argument resolution
 structopt = "0.3.9"
+# For nicer assertion
+die = "0.2.0"
 # RegEx
 regex = "1"
 

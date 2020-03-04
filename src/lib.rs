@@ -26,27 +26,28 @@ pub struct Cli {
 
 // Kernel detection
 // FIXME: Export in invidual crate
+// FIXME-TEST: Implement a test for this
 // This exports 'OS' enum with following data https://docs.rs/os-detect/0.2.2/os_detect/enum.OS.html used to determine kernel and if applies distro used
-pub fn kernel_detect() {
+pub fn detect_kernel() {
     use std::path::Path;
     use os_detect::detect_os_from_path;
     //use os_detect::detect_windows; -- Stubbed for windows support
     use std::process::exit;
+    use die::Die;
+    use die::die;
 
     // FIXME-bench: I assume that implementing it this way is the most efficient? Bench required -- Krey
     if cfg!(target_os = "unix") {
         detect_os_from_path(Path::new("/"))
-          .expect("Failed to detect os from path, unsupported kernel?");
+          .die_code("Failed to detect os from path, unsupported kernel?", 255);
     } else if cfg!(target_os = "windows") {
         // FIXME-QA: Use die() ?
-        println!("Windows is currently not supported, fixme?");
-        exit(1);
+        die!(1; "Windows is currently not supported, fixme?");
         //detect_windows(Path::new("c:/"))
-        //.expect("Failed to detect windows");
+        //    .expect("Failed to detect windows");
     } else {
-        // FIXME: Output the kernel
-        println!("This {:?} kernel is not supported\n", "FIXME_DETECT_OS");
-        exit(255);
+        use uname::uname;
+        die!(255; "This system '{}' is not supported\n", uname().unwrap().sysname);
 }
 
 // Detect File System Hierarchy
@@ -60,10 +61,28 @@ pub fn detect_filesystem_hierarchy() {
         let fsh3_0 = ["/bin", "/boot", "/etc", "/dev", "/etc", "/home", "/lib", "/media", "/mnt", "/opt", "/root", "/run", "/sbin", "/srv", "/tmp", "/usr" ];
 
     } else if cfg!(target_os = "windows") {
+        // FIXME: Output the function name
         unimplemented!("Windows is not implemented in detect_filesystem_hierarchy function")
     } else {
         // FIXME: Add msg
         exit(255);
+    }
+}
+
+// Function used to return used distribution
+// SANITYCHECK: Do we want this to return a string?
+pub fn detect_distro() -> String {
+    // Export OS enum with data from /etc/os-release
+    crate::detect_kernel();
+
+    #[cfg(target_os = "linux")]
+    match enum OS::Linux::info::id {
+      "debian" => ...,
+      "alpine" => ...,
+      "ubuntu" => ...,
+      // FIXME: Output the function name
+      // FIXME-IMPROVEMENT: use SNAFU crate?
+      _ => die!(255: "Unsupported option '{1}' has been parsed in '{2}' function", OS::Linux::info::id, function!())
     }
 }
 

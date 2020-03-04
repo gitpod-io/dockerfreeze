@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/false
+# This is BASH completion file expected to be sourced, do not invoke it
+
 _dockerfreeze() {
     local cur opts
     COMPREPLY=()

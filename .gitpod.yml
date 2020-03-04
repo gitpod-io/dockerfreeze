@@ -12,3 +12,9 @@ vscode:
     - bungcip.better-toml@0.3.2:3QfgGxxYtGHfJKQU7H0nEw==
     - timonwong.shellcheck@0.9.0:hsU/Rd39aqPYowTqL+DbXg==
     - mads-hartmann.bash-ide-vscode@1.4.0:/qx+rdXE/fGTGWhelNf3aQ==
+github:
+  prebuilds:
+    branches: true
+    pullRequestsFromForks: true
+    addComment: true
+    addLabel: true

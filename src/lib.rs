@@ -82,6 +82,7 @@ pub fn detect_distro() -> String {
       "ubuntu" => ...,
       // FIXME: Output the function name
       // FIXME-IMPROVEMENT: use SNAFU crate?
+      // STUB: https://github.com/rust-lang/rfcs/pull/2818 for function!()
       _ => die!(255: "Unsupported option '{1}' has been parsed in '{2}' function", OS::Linux::info::id, function!())
     }
 }

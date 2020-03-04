@@ -1,16 +1,21 @@
-#!/bin/sh
+#!/bin/false
+# This is BASH completion file expected to be sourced, do not invoke it
+
 _dockerfreeze() {
     local cur prev opts cmds
     COMREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     opts="-g -h -v -o --version --help --gitpod --output"
-    if [[ ${cur} == -* ]] ; then
-        COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
-        return 0
-    elif [[ ${cur} == r* ]]; then
-        COMPREPLY=( $(compgen -W "${opts}" ${cur}) )
-        return 0
-    fi
+    case "$cur" in
+        -*)
+            COMPREPLY=( $(compgen -W "$opts" -- $cur) )
+            return 0
+        ;;
+        r*)
+            COMPREPLY=( $(compgen -W "$opts" $cur) )
+            return 0
+        ;;
+    esac
 }
 complete -F _dockerfreeze dockerfreeze

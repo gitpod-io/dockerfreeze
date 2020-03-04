@@ -1,5 +1,5 @@
 [package]
-name = "dockerfreeze_capture_executables"
+name = "dockerfreeze_detect_kernel"
 version = "0.1.0"
 authors = ["Kreyren <KostWarCZE@RiXotStudio.cz>"]
 edition = "2018"
@@ -7,4 +7,3 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dockerfreeze_detect_kernel = { path = "../dockerfreeze_detect_kernel" }

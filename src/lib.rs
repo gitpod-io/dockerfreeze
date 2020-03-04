@@ -1,3 +1,6 @@
+
+//! FIXME-DOCS: Documentation
+
 use std::fs::File;
 use std::io::Write;
 use structopt::StructOpt;
@@ -21,17 +24,18 @@ pub struct Cli {
     pub gitpod: bool,
 }
 
-pub fn match_dist(distro: &str, file: &mut File) -> usize {
-    match distro {
-        "ubuntu" => file.write(b"FROM ubuntu:latest\n").unwrap(),
-        "alpine" => file.write(b"FROM alpine:latest\n").unwrap(),
-        "debian" => file.write(b"FROM debian:latest\n").unwrap(),
-        _ => {
-            println!(
-                "\x1b[33mUnknown Distro \"{}\" Re-routing to Ubuntu\x1b[0m",
-                distro
-            );
-            file.write("FROM ubuntu:latest\n".as_bytes()).unwrap()
-        }
-    }
-}
+// DO_NOT_MERGE: Stubbed for removal due replacement with os-detect
+// pub fn match_dist(distro: &str, file: &mut File) -> usize {
+//     match distro {
+//         "ubuntu" => file.write(b"FROM ubuntu:latest\n").unwrap(),
+//         "alpine" => file.write(b"FROM alpine:latest\n").unwrap(),
+//         "debian" => file.write(b"FROM debian:latest\n").unwrap(),
+//         _ => {
+//             println!(
+//                 "\x1b[33mUnknown Distro \"{}\" Re-routing to Ubuntu\x1b[0m",
+//                 distro
+//             );
+//             file.write("FROM ubuntu:latest\n".as_bytes()).unwrap()
+//         }
+//     }
+// }

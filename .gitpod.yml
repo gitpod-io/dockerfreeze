@@ -8,3 +8,9 @@ vscode:
     - serayuzgur.crates@0.4.7:HMkoguLcXp9M3ud7ac3eIw==
     - belfz.search-crates-io@1.2.1:kSLnyrOhXtYPjQpKnMr4eQ==
     - bungcip.better-toml@0.3.2:3QfgGxxYtGHfJKQU7H0nEw==
+github:
+  prebuilds:
+    branches: true
+    pullRequestsFromForks: true
+    addComment: true
+    addLabel: true

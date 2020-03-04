@@ -1,10 +1,9 @@
-use crate::lib::match_dist;
-use crate::detection::get_distro;
-use crate::lib::Cli;
 use std::env::vars;
 use std::fs::File;
 use std::io::Write;
 use structopt::StructOpt;
+use crate::modules::detection::get_distro;
+use crate::*; // hotfix
 
 pub fn write_linux_distro(file: &mut File) {
     let distro = get_distro();

@@ -18,6 +18,11 @@ RUN useradd \
 	--password gitpod \
 	gitpod || exit 1
 
+# Sudo
+RUN apt-get install -y sudo
+# Run echo so that it does not bother us later
+RUN sudo true
+
 # ### Rust ###
 # RUN true \
 #     # FIXME: Sanitize

@@ -9,6 +9,12 @@ USER root
 
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=C
+# overwrite this env variable to use a different window manager
+ENV WINDOW_MANAGER="openbox"
+
+# Add VNC startup script
+COPY start-vnc-session.bash /usr/bin/
+RUN chmod +x /usr/bin/start-vnc-session
 
 # Sudo
 RUN true \
@@ -36,6 +42,9 @@ RUN true \
 	&& if ! apt list --installed | grep -oP "^python3-pip -.*"; then apt-get install -y python3-pip; fi \
 	&& if ! apt list --installed | grep -oP "^python3-tk -.*"; then apt-get install -y python3-tk; fi \
 	&& if ! apt list --installed | grep -oP "^npm -.*"; then apt-get install -y npm; fi \
+	&& if ! apt list --installed | grep -oP "^novnc -.*"; then apt-get install -y novnc; fi \
+	# HOTFIX! Expected to allow change the window manager base on change of WINDOW_MANAGER envvar
+	&& if ! apt list --installed | grep -oP "^openbox -.*"; then apt-get install -y openbox; fi \
 	&& : "Clean repositories" \
 	&& apt-get autoremove -y \
 	&& : "Remove lists" \

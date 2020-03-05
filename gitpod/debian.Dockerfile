@@ -34,12 +34,12 @@ RUN true \
 	&& if ! apt list --installed | grep -oP "^shellcheck -.*"; then apt-get install -y shellcheck; fi \
 	&& if ! apt list --installed | grep -oP "^python3 -.*"; then apt-get install -y python3; fi \
 	&& if ! apt list --installed | grep -oP "^python3-pip -.*"; then apt-get install -y python3-pip; fi \
+	&& if ! apt list --installed | grep -oP "^python3-tk -.*"; then apt-get install -y python3-tk; fi \
 	&& if ! apt list --installed | grep -oP "^npm -.*"; then apt-get install -y npm; fi \
 	&& : "Clean repositories" \
 	&& apt-get autoremove -y \
 	&& : "Remove lists" \
 	&& rm -rf /var/lib/apt/lists/*
-
 
 # Add custom functions
 RUN if ! grep -qF 'ix()' /etc/bash.bashrc; then printf '%s\n' \

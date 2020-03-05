@@ -33,6 +33,7 @@ RUN true \
 	&& : "Install dependencies if needed" \
 	&& if ! apt list --installed | grep -oP "^shellcheck -.*"; then apt-get install -y shellcheck; fi \
 	&& if ! apt list --installed | grep -oP "^python3 -.*"; then apt-get install -y python3; fi \
+	&& if ! apt list --installed | grep -oP "^python3-pip -.*"; then apt-get install -y python3-pip; fi \
 	&& if ! apt list --installed | grep -oP "^npm -.*"; then apt-get install -y npm; fi \
 	&& : "Clean repositories" \
 	&& apt-get autoremove -y \

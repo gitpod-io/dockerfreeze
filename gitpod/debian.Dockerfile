@@ -10,18 +10,21 @@ USER root
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=C
 
-# Add 'gitpod' user
-RUN useradd \
-	--uid 33333 \
-	--create-home --home-dir /home/gitpod \
-	--shell /bin/bash \
-	--password gitpod \
-	gitpod || exit 1
-
 # Sudo
-RUN apt-get update && apt-get install -y sudo
-# Run echo so that it does not bother us later
-RUN sudo true
+RUN true \
+    && apt-get update \
+    && apt-get install -y sudo \
+    && sed -i.bkp -e 's/%sudo\s\+ALL=(ALL\(:ALL\)\?)\s\+ALL/%sudo ALL=NOPASSWD:ALL/g' /etc/sudoers
+
+# Add 'gitpod' user
+RUN true \
+	&& useradd \
+		--uid 33333 \
+		--groups sudo \
+		--create-home --home-dir /home/gitpod \
+		--shell /bin/bash \
+		--password gitpod \
+		gitpod || exit 1
 
 # ### Rust ###
 # RUN true \
@@ -67,6 +70,9 @@ RUN if ! grep -qF 'ix()' /etc/bash.bashrc; then printf '%s\n' \
 	>> /etc/bash.bashrc; fi
 
 USER gitpod
+
+# Run echo so that it does not bother us later
+RUN sudo true
 
 ### Python ###
 # FIXME-QA: Do not use pip? https://chriswarrick.com/blog/2018/09/04/python-virtual-environments/

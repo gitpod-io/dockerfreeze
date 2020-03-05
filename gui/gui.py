@@ -1,15 +1,4 @@
-import sys
 import PySimpleGUI as sg
-
-# Import tkinter, required for PySimpleGUI
-if sys.version_info[0] == 3:
-    import tkinter as tk
-    from tkinter import *
-elif sys.version_info[0] == 2:
-    import tkinter as Tk
-    from Tkinter import *
-else:
-    sys.exit(255)
 
 # Theme
 sg.theme('DarkAmber')

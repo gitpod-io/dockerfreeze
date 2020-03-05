@@ -19,10 +19,10 @@ RUN useradd \
 	gitpod || exit 1
 
 
-
 ### Python ###
 ENV PATH="$HOME/.pyenv/bin:$HOME/.pyenv/shims:$PATH"
 RUN true \
+    && apt-get update \
     && apt-get install -y --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev \
     && curl -fsSL https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash \
     # FIXME: Sanitize

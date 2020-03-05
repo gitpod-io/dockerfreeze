@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:stable
 
 # FIXME: Outputs `gitpod@ws-ce281d58-997b-44b8-9107-3f2da7feede3:/workspace/gitpod-tests1$` in terminal
 
@@ -26,42 +26,18 @@ RUN true \
 		--password gitpod \
 		gitpod || exit 1
 
-# ### Rust ###
-# RUN true \
-#     # FIXME: Sanitize
-#     && apt-get update \
-#     # FIXME: Sanitize
-#     && apt-get install -yq \
-#         # Enable Rust static binary builds
-#         musl \
-#         musl-dev \
-#         musl-tools \
-#     && cp /home/gitpod/.profile /home/gitpod/.profile_orig && \
-#     && curl -fsSL https://sh.rustup.rs | sh -s -- -y \
-#     && .cargo/bin/rustup toolchain install 1.41.1 \
-#     && .cargo/bin/rustup default 1.41.1 \
-#     # Save image size by removing now-redudant stable toolchain
-#     && .cargo/bin/rustup toolchain uninstall stable \
-#     && .cargo/bin/rustup component add \
-#         rls \
-#         rust-analysis \
-#         rust-src \
-#     && .cargo/bin/rustup completions bash | sudo tee /etc/bash_completion.d/rustup.bash-completion > /dev/null \
-#     && .cargo/bin/rustup target add x86_64-unknown-linux-musl \
-#     && grep -v -F -x -f /home/gitpod/.profile_orig /home/gitpod/.profile > /home/gitpod/.bashrc.d/80-rust \
-#     && bash -lc "cargo install cargo-watch cargo-edit cargo-tree"
-
 # Install dependencies
 RUN true \
-    && : "Update repositories if needed" \
-    && if ! apt list | grep -qP "^shellcheck\s{1}-.*|^python3\s{1}-.*"; then apt-get update; fi \
-    && : "Install dependencies if needed" \
-    && if ! apt list --installed | grep -oP "^shellcheck -.*"; then apt-get install -y shellcheck; fi \
-		&& if ! apt list --installed | grep -oP "^python3 -.*"; then apt-get install -y python3; fi \
-    && : "Clean repositories" \
-    && apt-get autoremove -y \
-    && : "Remove lists" \
-    && rm -rf /var/lib/apt/lists/*
+	&& : "Update repositories if needed" \
+	&& if ! apt list | grep -qP "^shellcheck\s{1}-.*|^python3\s{1}-.*"; then apt-get update; fi \
+	&& : "Install dependencies if needed" \
+	&& if ! apt list --installed | grep -oP "^shellcheck -.*"; then apt-get install -y shellcheck; fi \
+	&& if ! apt list --installed | grep -oP "^python3 -.*"; then apt-get install -y python3; fi \
+	&& if ! apt list --installed | grep -oP "^npm -.*"; then apt-get install -y npm; fi \
+	&& : "Clean repositories" \
+	&& apt-get autoremove -y \
+	&& : "Remove lists" \
+	&& rm -rf /var/lib/apt/lists/*
 
 
 # Add custom functions

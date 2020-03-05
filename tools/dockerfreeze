@@ -1,15 +1,21 @@
 #!/bin/sh
+
+# shellcheck shell=bash
+# Affected by https://github.com/koalaman/shellcheck/issues/1771 for directives comments
+
 _dockerfreeze() {
-    local cur prev opts cmds
+    local cur prev opts
+    # shellcheck disable=SC2034 # used by complete
     COMREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
+    # shellcheck disable=SC2034 # used by complete
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     opts="-g -h -v -o --version --help --gitpod --output"
     if [[ ${cur} == -* ]] ; then
-        COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+        COMPREPLY=( "$(compgen -W "$opts" -- "$cur")" )
         return 0
     elif [[ ${cur} == r* ]]; then
-        COMPREPLY=( $(compgen -W "${opts}" ${cur}) )
+        COMPREPLY=( "$(compgen -W "$opts" "$cur")" )
         return 0
     fi
 }

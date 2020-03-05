@@ -43,32 +43,6 @@ RUN useradd \
 #     && grep -v -F -x -f /home/gitpod/.profile_orig /home/gitpod/.profile > /home/gitpod/.bashrc.d/80-rust \
 #     && bash -lc "cargo install cargo-watch cargo-edit cargo-tree"
 
-### Python ###
-# FIXME-QA: Do not use pip? https://chriswarrick.com/blog/2018/09/04/python-virtual-environments/
-ENV PATH="$HOME/.pyenv/bin:$HOME/.pyenv/shims:$PATH"
-RUN true \
-    && [ ! -d "/home/gitpod/.bashrc.d" ] && mkdir "/home/gitpod/.bashrc.d" \
-    && chown -R gitpod:gitpod /home/gitpod/.bashrc.d \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev \
-    && curl -fsSL https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash \
-    # FIXME: Sanitize
-    &&  printf '%s\n' \
-          'eval "$(pyenv init -)"' \
-          'eval "$(pyenv virtualenv-init -)"' \
-        >> /home/gitpod/.bashrc.d/60-python \
-    && pyenv install 2.7.17 \
-    && pyenv install 3.7.6 \
-    && pyenv global 2.7.17 3.7.6 \
-    && pip2 install --upgrade pip \
-    && pip2 install virtualenv pipenv pylint rope flake8 autopep8 pep8 pylama pydocstyle bandit notebook python-language-server[all]==0.25.0 \
-    && pip3 install --upgrade pip \
-    && pip3 install virtualenv pipenv pylint rope flake8 mypy autopep8 pep8 pylama pydocstyle bandit notebook python-language-server[all]==0.25.0 \
-    && sudo rm -rf /tmp/*
-# Gitpod will automatically add user site under `/workspace` to persist your packages.
-# ENV PYTHONUSERBASE=/workspace/.pip-modules \
-#    PIP_USER=yes
-
 # Install dependencies
 RUN true \
     && : "Update repositories if needed" \
@@ -88,6 +62,31 @@ RUN if ! grep -qF 'ix()' /etc/bash.bashrc; then printf '%s\n' \
 	>> /etc/bash.bashrc; fi
 
 USER gitpod
+
+### Python ###
+# FIXME-QA: Do not use pip? https://chriswarrick.com/blog/2018/09/04/python-virtual-environments/
+ENV PATH="$HOME/.pyenv/bin:$HOME/.pyenv/shims:$PATH"
+RUN true \
+    && [ ! -d "$HOME/.bashrc.d" ] && mkdir "$HOME/.bashrc.d" \
+    && sudo apt-get update \
+    && sudo apt-get install -y --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev \
+    && curl -fsSL https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash \
+    # FIXME: Sanitize
+    &&  printf '%s\n' \
+          'eval "$(pyenv init -)"' \
+          'eval "$(pyenv virtualenv-init -)"' \
+        >> /home/gitpod/.bashrc.d/60-python \
+    && pyenv install 2.7.17 \
+    && pyenv install 3.7.6 \
+    && pyenv global 2.7.17 3.7.6 \
+    && pip2 install --upgrade pip \
+    && pip2 install virtualenv pipenv pylint rope flake8 autopep8 pep8 pylama pydocstyle bandit notebook python-language-server[all]==0.25.0 \
+    && pip3 install --upgrade pip \
+    && pip3 install virtualenv pipenv pylint rope flake8 mypy autopep8 pep8 pylama pydocstyle bandit notebook python-language-server[all]==0.25.0 \
+    && sudo rm -rf /tmp/*
+# Gitpod will automatically add user site under `/workspace` to persist your packages.
+# ENV PYTHONUSERBASE=/workspace/.pip-modules \
+#    PIP_USER=yes
 
 # Cache npm
 RUN npm i -g bash-language-server

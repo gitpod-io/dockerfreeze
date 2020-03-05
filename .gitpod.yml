@@ -1,5 +1,5 @@
 image:
-  file: gitpod/gitpod.Dockerfile
+  file: gitpod/debian.Dockerfile
 tasks:
   - init: |
       cargo build

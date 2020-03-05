@@ -19,7 +19,7 @@ RUN useradd \
 	gitpod || exit 1
 
 # Sudo
-RUN apt-get install -y sudo
+RUN apt-get update && apt-get install -y sudo
 # Run echo so that it does not bother us later
 RUN sudo true
 

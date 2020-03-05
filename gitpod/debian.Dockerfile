@@ -28,7 +28,7 @@ RUN true \
         musl \
         musl-dev \
         musl-tools \
-    && cp /home/gitpod/.profile /home/gitpod/.profile_orig && \
+    && cp /home/gitpod/.profile /home/gitpod/.profile_orig \
     && curl -fsSL https://sh.rustup.rs | sh -s -- -y \
     && .cargo/bin/rustup toolchain install 1.41.1 \
     && .cargo/bin/rustup default 1.41.1 \
@@ -51,7 +51,7 @@ RUN true \
     # FIXME: Sanitize
     &&  printf '%s\n' \
           'eval "$(pyenv init -)"' \
-          'eval "$(pyenv virtualenv-init -)"'\
+          'eval "$(pyenv virtualenv-init -)"' \
         >> /home/gitpod/.bashrc.d/60-python \
     && pyenv install 2.7.17 \
     && pyenv install 3.7.6 \

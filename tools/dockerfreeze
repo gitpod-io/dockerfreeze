@@ -1,15 +1,13 @@
-#!/bin/sh
 _dockerfreeze() {
-    local cur prev opts cmds
-    COMREPLY=()
+    local cur opts
+    COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    prev="${COMP_WORDS[COMP_CWORD-1]}"
     opts="-g -h -v -o --version --help --gitpod --output"
     if [[ ${cur} == -* ]] ; then
-        COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+        mapfile -t COMPREPLY < <(compgen -W "${opts}" -- "${cur}")
         return 0
     elif [[ ${cur} == r* ]]; then
-        COMPREPLY=( $(compgen -W "${opts}" ${cur}) )
+        mapfile -t COMPREPLY < <(compgen -W "${opts}" "${cur}")
         return 0
     fi
 }

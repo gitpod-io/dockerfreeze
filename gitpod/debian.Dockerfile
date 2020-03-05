@@ -54,9 +54,10 @@ RUN true \
 # Install dependencies
 RUN true \
     && : "Update repositories if needed" \
-    && if ! apt-cache search shellcheck | grep -qP "^shellcheck -.*"; then apt-get update; fi \
+    && if ! apt list | grep -qP "^shellcheck\s{1}-.*|^python3\s{1}-.*"; then apt-get update; fi \
     && : "Install dependencies if needed" \
     && if ! apt list --installed | grep -oP "^shellcheck -.*"; then apt-get install -y shellcheck; fi \
+		&& if ! apt list --installed | grep -oP "^python3 -.*"; then apt-get install -y python3; fi \
     && : "Clean repositories" \
     && apt-get autoremove -y \
     && : "Remove lists" \
@@ -73,31 +74,6 @@ USER gitpod
 
 # Run echo so that it does not bother us later
 RUN sudo printf '%s\n' "sudo ping"
-
-### Python ###
-# FIXME-QA: Do not use pip? https://chriswarrick.com/blog/2018/09/04/python-virtual-environments/
-ENV PATH="$HOME/.pyenv/bin:$HOME/.pyenv/shims:$PATH"
-RUN true \
-    && [ ! -d "$HOME/.bashrc.d" ] && mkdir "$HOME/.bashrc.d" \
-    && sudo apt-get update \
-    && sudo apt-get install -y --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev \
-    && curl -fsSL https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash \
-    # FIXME: Sanitize
-    &&  printf '%s\n' \
-          'eval "$(pyenv init -)"' \
-          'eval "$(pyenv virtualenv-init -)"' \
-        >> /home/gitpod/.bashrc.d/60-python \
-    && pyenv install 2.7.17 \
-    && pyenv install 3.7.6 \
-    && pyenv global 2.7.17 3.7.6 \
-    && pip2 install --upgrade pip \
-    && pip2 install virtualenv pipenv pylint rope flake8 autopep8 pep8 pylama pydocstyle bandit notebook python-language-server[all]==0.25.0 \
-    && pip3 install --upgrade pip \
-    && pip3 install virtualenv pipenv pylint rope flake8 mypy autopep8 pep8 pylama pydocstyle bandit notebook python-language-server[all]==0.25.0 \
-    && sudo rm -rf /tmp/*
-# Gitpod will automatically add user site under `/workspace` to persist your packages.
-# ENV PYTHONUSERBASE=/workspace/.pip-modules \
-#    PIP_USER=yes
 
 # Cache npm
 RUN npm i -g bash-language-server

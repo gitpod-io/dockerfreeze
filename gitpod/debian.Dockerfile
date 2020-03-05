@@ -72,7 +72,7 @@ RUN if ! grep -qF 'ix()' /etc/bash.bashrc; then printf '%s\n' \
 USER gitpod
 
 # Run echo so that it does not bother us later
-RUN sudo true
+RUN sudo printf '%s\n' "sudo ping"
 
 ### Python ###
 # FIXME-QA: Do not use pip? https://chriswarrick.com/blog/2018/09/04/python-virtual-environments/

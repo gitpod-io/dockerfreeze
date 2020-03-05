@@ -1,16 +1,5 @@
 image:
   file: gitpod/debian.Dockerfile
-tasks:
-  - init: |
-      cargo build
-      cargo install --path . --force
-    command: dockerfreeze --help
-    name: Build Dockerfreeze
-  - init: |
-      pip3 install -r gui/requirements.txt
-      python3 gui/gui.py
-    name: Build GUI
-    openMode: split-right
 ports:
   - port: 6080
     onOpen: open-preview
@@ -18,6 +7,17 @@ ports:
     onOpen: ignore
   - port: 5900
     onOpen: ignore
+tasks:
+  #- init: |
+      #cargo build
+      #cargo install --path . --force
+    #command: dockerfreeze --help
+    #name: Build Dockerfreeze
+  - init: |
+      pip3 install -r gui/requirements.txt
+      python3 gui/gui.py
+    name: Build GUI
+    openMode: split-right
 vscode:
   extensions:
     - hbenl.vscode-test-explorer@2.15.0:koqDUMWDPJzELp/hdS/lWw==

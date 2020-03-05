@@ -18,30 +18,7 @@ RUN useradd \
 	--password gitpod \
 	gitpod || exit 1
 
-### Rust ###
-RUN true \
-    # FIXME: Sanitize
-    && apt-get update \
-    # FIXME: Sanitize
-    && apt-get install -yq \
-        # Enable Rust static binary builds
-        musl \
-        musl-dev \
-        musl-tools \
-    && cp /home/gitpod/.profile /home/gitpod/.profile_orig \
-    && curl -fsSL https://sh.rustup.rs | sh -s -- -y \
-    && .cargo/bin/rustup toolchain install 1.41.1 \
-    && .cargo/bin/rustup default 1.41.1 \
-    # Save image size by removing now-redudant stable toolchain
-    && .cargo/bin/rustup toolchain uninstall stable \
-    && .cargo/bin/rustup component add \
-        rls \
-        rust-analysis \
-        rust-src \
-    && .cargo/bin/rustup completions bash | sudo tee /etc/bash_completion.d/rustup.bash-completion > /dev/null \
-    && .cargo/bin/rustup target add x86_64-unknown-linux-musl \
-    && grep -v -F -x -f /home/gitpod/.profile_orig /home/gitpod/.profile > /home/gitpod/.bashrc.d/80-rust \
-    && bash -lc "cargo install cargo-watch cargo-edit cargo-tree"
+
 
 ### Python ###
 ENV PATH="$HOME/.pyenv/bin:$HOME/.pyenv/shims:$PATH"

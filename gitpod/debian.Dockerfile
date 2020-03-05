@@ -52,4 +52,5 @@ USER gitpod
 RUN sudo printf '%s\n' "sudo ping"
 
 # Cache npm
-RUN npm i -g bash-language-server
+## FIXME: fails
+#RUN npm i -g bash-language-server

@@ -13,7 +13,7 @@ ENV LC_ALL=C
 ENV WINDOW_MANAGER="openbox"
 
 # Add VNC startup script
-COPY gitpod/start-vnc-session.bash /usr/bin/
+COPY gitpod/start-vnc-session.bash /usr/bin/start-vnc-session
 RUN chmod +x /usr/bin/start-vnc-session
 
 # Sudo

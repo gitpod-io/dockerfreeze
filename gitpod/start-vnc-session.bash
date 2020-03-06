@@ -19,9 +19,9 @@ DISP="${DISPLAY:1}"
 Xvfb -screen "$DISP" 1920x1080x16 -ac -pn -noreset &
 
 # Process WINDOW_MANAGER
-if ! apt list --installed "$WINDOW_MANAGER" | grep -oP "^$WINDOW_MANAGER\\s{1}-.*"; then
+if ! apt list --installed | grep -oP "^$WINDOW_MANAGER\\s{1}-.*"; then
 	apt install -y "$WINDOW_MANAGER" || die 1 "Unable to install $WINDOW_MANAGER on the system"
-elif apt list --installed "$WINDOW_MANAGER" | grep -oP "^$WINDOW_MANAGER\\s{1}-.*"; then
+elif apt list --installed | grep -oP "^$WINDOW_MANAGER\\s{1}-.*"; then
 	true
 else
 	exit 255

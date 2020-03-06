@@ -1,0 +1,49 @@
+# Programming language specific
+- regExp: ".*\\.rs+$"
+  labels: ["rustlang"]
+
+- regExp: ".*\\.py+$"
+  labels: ["python"]
+
+- regExp: ".*\\.c+$"
+  labels: ["c-lang"]
+
+- regExp: ".*\\.cpp+$"
+  labels: ["CPP"]
+
+- regExp: ".*\\.sh+$"
+  labels: ["shell"]
+
+- regExp: ".*\\.bash+$"
+  labels: ["bash"]
+
+- regExp: ".*\\.br+$"
+  labels: ["brainfuck"]
+
+- regExp: ".*\\.jar+$"
+  labels: ["java"]
+
+- regExp: ".*\\.v+$"
+  labels: ["vlang"]
+
+- regExp: ".*\\.cs+$"
+  labels: ["csharp"]
+
+- regExp: "^/tests/.*"
+  labels: ["tests"]
+
+- regExp: "^/benches/.*"
+  labels: ["benches"]
+
+- regExp: "^/LICENSE/.*"
+  labels: ["license"]
+
+- regExp: ".*\\.md+$"
+  labels: ["markdown"]
+
+- regExp: "^(Cargo\\.toml|requirements\\.txt)$"
+  labels: ["dependencies"]
+
+# Repository specific
+- regExp: "^/docs/.*"
+  labels: ["docs"]

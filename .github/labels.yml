@@ -1,0 +1,59 @@
+# This file handles labels on GitHub
+
+# MISC
+- name: bug
+  color: d73a4a
+  description: "Something isn't working"
+  
+ - name: question
+  color: 7300ff
+  description: "For questions"
+
+- name: feature-request
+  color: 03fc5a
+  description: "Feature requests"
+
+- name: docs
+  color: 0075ca
+  description: "Improvements or additions to documentation"
+
+- name: duplicate
+  color: cfd8d7
+  description: "This issue or pull request already exists"
+
+- name: enhancement
+  color: a22eef
+  description: "Proposal for code improvement"
+
+- name: license
+  color: 1a7546
+  description: "Relevant to licensing"
+
+- name: dependencies
+  color: ca0ef0
+  description: "Relevant to dependencies"
+
+- name: tests
+  color: 8d0fd6
+  description: "Relevant to tests"
+
+- name: benches
+  color: cc1250
+  description: "Relevant to benchmarks"
+
+# Programming language specific
+- name: python
+  color: 00aeff
+  description: "Relevant to python"
+
+- name: rustlang
+  color: f58142
+  description: "Relevant to rustlang"
+
+- name: shell
+  color: 74e63c
+  description: "Relevant to shell"
+
+- name: bash
+  color: 9dff00
+  description: "Relevant to bash"

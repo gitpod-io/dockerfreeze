@@ -1,0 +1,13 @@
+# Disable blank issues
+blank_issues_enabled: false
+
+contact_links:
+  - name: IRC
+    url: https://webchat.freenode.net/#gitpod
+    about: For simple questions and brainstorming
+  - name: Forum
+    url: https://community.gitpod.io/
+    about: For complicated issues
+  - name: Gitpod
+    url: https://github.com/gitpod-io/gitpod/
+    about: For gitpod specific issues

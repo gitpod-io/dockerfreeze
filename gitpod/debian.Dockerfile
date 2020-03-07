@@ -18,8 +18,11 @@ RUN chmod +x /usr/bin/start-vnc-session
 
 # Sudo
 RUN true \
-    && apt-get update \
-    && apt-get install -y sudo \
+    # Make sure sudo is available
+    && if ! apt list | grep -qP "^sudo\s{1}-.*"; then apt-get update; fi \
+    # Install sudo if needed
+    && if ! apt list --installed | grep -oP "^sudo\s{1}-.*"; then apt-get install -y sudo; fi \
+    # FIXME: Sanitize
     && sed -i.bkp -e 's/%sudo\s\+ALL=(ALL\(:ALL\)\?)\s\+ALL/%sudo ALL=NOPASSWD:ALL/g' /etc/sudoers
 
 # Add 'gitpod' user
@@ -47,8 +50,9 @@ RUN true \
 	&& if ! apt list --installed | grep -oP "^openbox -.*"; then apt-get install -y openbox; fi \
 	&& : "Clean repositories" \
 	&& apt-get autoremove -y \
-	&& : "Remove lists" \
-	&& rm -rf /var/lib/apt/lists/*
+	# DO_NOT_MERGE: Disabled for experiment
+	# && : "Remove lists" \
+	# && rm -rf /var/lib/apt/lists/*
 
 # Add custom functions
 RUN if ! grep -qF 'ix()' /etc/bash.bashrc; then printf '%s\n' \
@@ -60,6 +64,14 @@ USER gitpod
 
 # Run echo so that it does not bother us later
 RUN sudo printf '%s\n' "sudo ping"
+
+# Management of bashrc
+RUN if ! grep -qF "@gitpod" "$HOME/.bashrc"; then printf '%s\n' \
+  "# shellcheck disable=SC2155 # FIXME?" \
+  "# shellcheck disable=SC2025 # Does not apply to this usage" \
+  "# shellcheck disable=SC1117 # Does not apply to this usage" \
+  "export PS1=\"\033[1m\e[38;5;201m[ \t : \w : EXIT \$? ]\033[0m\e[38;5;011m\n\u@gitpod \\$ \[$(tput sgr0)\]\"" \
+  >> "$HOME/.bashrc"; fi
 
 # Cache npm
 ## FIXME: fails

@@ -49,7 +49,7 @@ RUN true \
 	# HOTFIX! Expected to allow change the window manager base on change of WINDOW_MANAGER envvar
 	&& if ! apt list --installed | grep -oP "^openbox -.*"; then apt-get install -y openbox; fi \
 	&& : "Clean repositories" \
-	&& apt-get autoremove -y \
+	&& apt-get autoremove -y
 	# DO_NOT_MERGE: Disabled for experiment
 	# && : "Remove lists" \
 	# && rm -rf /var/lib/apt/lists/*

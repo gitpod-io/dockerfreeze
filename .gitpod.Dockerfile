@@ -13,4 +13,4 @@ RUN sudo apt-get update \
 
 RUN npm i -g bash-language-server
 
-RUN pyenv global 3.6.2
+RUN pyenv install 3.6.2 && pyenv global 3.6.2

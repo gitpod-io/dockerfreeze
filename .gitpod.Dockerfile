@@ -12,3 +12,5 @@ RUN sudo apt-get update \
         python3-tk
 
 RUN npm i -g bash-language-server
+
+RUN pyenv global 3.6.2

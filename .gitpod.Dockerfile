@@ -2,6 +2,8 @@ FROM gitpod/workspace-full-vnc
 
 USER gitpod
 
+RUN brew install tcl-tk
+
 RUN sudo apt-get update \
     && sudo apt-get install -y \
         shellcheck \

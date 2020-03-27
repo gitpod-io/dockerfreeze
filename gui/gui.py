@@ -14,12 +14,12 @@ def warn(error):
 
 def main():
     layout = [
-        [sg.Text('Welcome To DockerFreeze GUI')],
+        [sg.Text('Welcome To Dockerfreeze GUI')],
         [sg.T(" " * 7), sg.Text('Gitpod Ready', size=(12, 1)), sg.Checkbox("", default=False)],
         [sg.T(" " * 3), sg.Submit("BUILD"), sg.Cancel()]
     ]
 
-    mainWindow = sg.Window('Docker Freeze Gui', default_element_size=(40, 1)).Layout(layout)
+    mainWindow = sg.Window('Dockerfreeze GUI', default_element_size=(40, 1)).Layout(layout)
     cprint("Main Window Running", "green")
     
     while True:  # Event Loop

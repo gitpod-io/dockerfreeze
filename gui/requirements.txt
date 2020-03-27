@@ -1,1 +1,2 @@
-PySimpleGUI==4.16.0
+PySimpleGUI==4.18.0
+termcolor==1.1.0

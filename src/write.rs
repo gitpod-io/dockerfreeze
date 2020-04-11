@@ -1,6 +1,7 @@
-use crate::lib::match_dist;
 use crate::detection::get_distro;
+use crate::lib::match_dist;
 use crate::lib::Cli;
+use crate::path::path;
 use std::env::vars;
 use std::fs::File;
 use std::io::Write;
@@ -41,5 +42,11 @@ pub fn write_env_vars(file: &mut File) {
             }
         }
         count += 1;
+    }
+}
+
+pub fn add_programs(file: &mut File) {
+    for directory in path() {
+        &file.write(format!("\nCOPY {} {}", directory, directory).as_bytes());
     }
 }

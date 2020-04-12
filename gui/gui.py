@@ -1,5 +1,5 @@
 import PySimpleGUI as sg
-from os import system
+from os import system, getcwd
 from os.path import exists
 from termcolor import cprint
 
@@ -40,7 +40,7 @@ def main():
             if did_error:
                 warn("File already exists")
             else:
-                sg.popup("Dockerfile Built")
+                sg.popup("Dockerfile Built in " + getcwd())
             did_error = False
     cprint("Closing Application...", "red")
     mainWindow.close()

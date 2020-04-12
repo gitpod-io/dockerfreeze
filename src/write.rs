@@ -1,5 +1,5 @@
-use crate::lib::match_dist;
 use crate::detection::get_distro;
+use crate::lib::match_dist;
 use crate::lib::Cli;
 use std::env::vars;
 use std::fs::File;
@@ -17,26 +17,35 @@ pub fn write_linux_distro(file: &mut File) {
 
 pub fn write_env_vars(file: &mut File) {
     let mut count = 0;
+    let length = vars().count() - 1;
     for (key, value) in vars() {
         let value = value.replace("\"", "\\\"");
         if value.contains(" ") || value.contains("{") || value.contains("}") {
             if count == 0 {
                 &file
-                    .write(format!("ENV {}=\"{}\" ", key, value).as_bytes())
+                    .write(format!("ENV {}=\"{}\" \\\n", key, value).as_bytes())
+                    .unwrap();
+            } else if count != length {
+                &file
+                    .write(format!("    {}=\"{}\" \\\n", key, value).as_bytes())
                     .unwrap();
             } else {
                 &file
-                    .write(format!("{}=\"{}\" ", key, value).as_bytes())
+                    .write(format!("    {}=\"{}\"", key, value).as_bytes())
                     .unwrap();
             }
         } else {
             if count == 0 {
                 &file
-                    .write(format!("ENV {}={} ", key, value).as_bytes())
+                    .write(format!("ENV {}={} \\\n", key, value).as_bytes())
+                    .unwrap();
+            } else if count != length {
+                &file
+                    .write(format!("    {}={} \\\n", key, value).as_bytes())
                     .unwrap();
             } else {
                 &file
-                    .write(format!("{}={} ", key, value).as_bytes())
+                    .write(format!("    {}={}", key, value).as_bytes())
                     .unwrap();
             }
         }
